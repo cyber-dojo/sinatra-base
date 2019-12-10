@@ -19,16 +19,16 @@ jobs:
           command: |
             set -e
             declare -r NAME="${CIRCLE_PROJECT_REPONAME}"
-            declare -r SHA="${CIRCLE_SHA1}"
-            docker tag cyberdojo/${NAME}:latest cyberdojo/${NAME}:${SHA:0:7}
+            declare -r TAG="${CIRCLE_SHA1:0:7}"
+            docker tag cyberdojo/${NAME}:latest cyberdojo/${NAME}:${TAG}
       - run:
           name: Publish tagged docker image on dockerhub
           command: |
             set -e
             declare -r NAME="${CIRCLE_PROJECT_REPONAME}"
-            declare -r SHA="${CIRCLE_SHA1}"
+            declare -r TAG="${CIRCLE_SHA1:0:7}"
             echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
-            docker push cyberdojo/${NAME}:${SHA:0:7}
+            docker push cyberdojo/${NAME}:${TAG}
             docker push cyberdojo/${NAME}:latest
             docker logout
       - run:
