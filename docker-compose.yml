@@ -1,0 +1,9 @@
+
+version: '2.2'
+
+services:
+
+  rack-base:
+    build:
+      context: .
+    image: cyberdojo/sinatra-base
