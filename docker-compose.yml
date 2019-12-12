@@ -6,4 +6,5 @@ services:
   sinatra-base:
     build:
       context: .
+      args: [ SHA ]      
     image: cyberdojo/sinatra-base
