@@ -3,7 +3,7 @@ version: '3.7'
 
 services:
 
-  rack-base:
+  sinatra-base:
     build:
       context: .
     image: cyberdojo/sinatra-base
