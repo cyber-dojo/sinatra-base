@@ -1,17 +1,13 @@
-FROM alpine:latest
+FROM cyberdojo/rack-base
 LABEL maintainer=jon@jaggersoft.com
+
+ARG SHA
+ENV SHA=${SHA}
 
 WORKDIR /app
 COPY Gemfile .
 
-# tar is needed to tar-pipe test coverage out of /tmp tmpfs
-RUN apk --update --upgrade --no-cache add \
-    bash \
-    ruby-dev \
-    ruby-bundler \
-    tar && \
-\
-apk add --update --upgrade --virtual \
+RUN apk add --update --upgrade --virtual \
     build-dependencies \
     build-base && \
 echo "gem: --no-rdoc --no-ri" > ~/.gemrc && \
