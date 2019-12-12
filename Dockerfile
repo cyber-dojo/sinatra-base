@@ -7,7 +7,6 @@ COPY Gemfile .
 # tar is needed to tar-pipe test coverage out of /tmp tmpfs
 RUN apk --update --upgrade --no-cache add \
     bash \
-    nodejs \
     ruby-dev \
     ruby-bundler \
     tar && \

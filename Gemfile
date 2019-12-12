@@ -6,7 +6,6 @@ gem 'sass'
 gem 'sassc'
 gem 'uglifier'
 gem 'sprockets'
-gem 'execjs'
 gem 'thin'
 gem 'oj'         # fast JSON parser
 gem 'bigdecimal' # required by oj
