@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'sinatra-contrib'
+gem 'sass'
 gem 'sassc'
 gem 'sprockets'
 gem 'uglifier'
