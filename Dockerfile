@@ -1,4 +1,4 @@
-FROM cyberdojo/rack-base:2e387b6
+FROM cyberdojo/rack-base:8fb133a
 LABEL maintainer=jon@jaggersoft.com
 
 ARG SHA
