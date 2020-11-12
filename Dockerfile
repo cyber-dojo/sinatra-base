@@ -1,9 +1,6 @@
 FROM cyberdojo/rack-base:8fb133a
 LABEL maintainer=jon@jaggersoft.com
 
-ARG SHA
-ENV SHA=${SHA}
-
 WORKDIR /app
 COPY Gemfile .
 
@@ -18,5 +15,8 @@ rm -vrf /usr/lib/ruby/gems/*/cache/* \
         /var/cache/apk/* \
         /tmp/* \
         /var/tmp/*
+
+ARG GIT_COMMIT_SHA
+ENV SHA=${GIT_COMMIT_SHA}
 
 RUN apk add --update --upgrade nodejs
