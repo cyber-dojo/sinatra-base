@@ -1,42 +1,23 @@
 version: 2
 jobs:
-  build-publish-trigger:
-
+  build-publish:
     machine:
-      image: ubuntu-1604:201903-01
-
-    working_directory: ~/repo
-
+      image: ubuntu-2004:202008-01
     steps:
       - checkout
       - run:
-          name: Build docker image
+          name: Build tagged image, publish it
           command: |
             set -e
-            ./build_test_publish.sh
-      - run:
-          name: Tag docker image
-          command: |
-            set -e
-            declare -r NAME="${CIRCLE_PROJECT_REPONAME}"
-            declare -r TAG="${CIRCLE_SHA1:0:7}"
-            docker tag cyberdojo/${NAME}:latest cyberdojo/${NAME}:${TAG}
-      - run:
-          name: Publish tagged docker image on dockerhub
-          command: |
-            set -e
-            declare -r NAME="${CIRCLE_PROJECT_REPONAME}"
-            declare -r TAG="${CIRCLE_SHA1:0:7}"
             echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
-            docker push cyberdojo/${NAME}:${TAG}
-            docker push cyberdojo/${NAME}:latest
+            ./build_test_publish.sh
             docker logout
 
 workflows:
   version: 2
-  build-publish-trigger:
+  build-publish:
     jobs:
-      - build-publish-trigger:
+      - build-publish:
           context: cyberdojo-context
           filters:
             branches:
