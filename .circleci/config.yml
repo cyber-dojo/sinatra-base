@@ -13,7 +13,7 @@ jobs:
           name: Build docker image
           command: |
             set -e
-            ./build_test_tag_publish.sh
+            ./build_test_publish.sh
       - run:
           name: Tag docker image
           command: |
@@ -31,14 +31,6 @@ jobs:
             docker push cyberdojo/${NAME}:${TAG}
             docker push cyberdojo/${NAME}:latest
             docker logout
-      - run:
-          name: Trigger dependent repos
-          command: |
-            set -e
-            TRIGGER=trigger-dependent-repos.sh
-            curl -O --fail ${CIRCLECI_SCRIPT_DIR}/${TRIGGER}
-            chmod 700 ./${TRIGGER}
-            # ./${TRIGGER} differ mapper porter ragger saver starter-base zipper
 
 workflows:
   version: 2
