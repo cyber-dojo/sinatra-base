@@ -1,8 +1,12 @@
-FROM cyberdojo/rack-base:af6db2f
+FROM cyberdojo/rack-base:afab321
 LABEL maintainer=jon@jaggersoft.com
 
 WORKDIR /app
 COPY Gemfile .
+
+RUN apk add --no-cache \
+  libxml2-dev \
+  libxslt-dev
 
 RUN apk add --update --upgrade --virtual \
     build-dependencies \

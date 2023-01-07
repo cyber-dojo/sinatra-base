@@ -1,8 +1,13 @@
-#!/bin/bash -Eeu
+#!/usr/bin/env bash
+set -Eeu
 
-readonly SH_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/sh" && pwd)"
-source "${SH_DIR}/build_docker_image.sh"
-source "${SH_DIR}/on_ci_publish_tagged_images.sh"
+export REPO_ROOT="$(git rev-parse --show-toplevel)"
+export SH_DIR="${REPO_ROOT}/sh"
+source "${SH_DIR}/kosli.sh"
+source "${SH_DIR}/lib.sh"
 
 build_docker_image
-on_ci_publish_tagged_images
+on_ci_publish_tagged_image
+on_ci_kosli_declare_pipeline
+on_ci_kosli_report_artifact
+#on_ci_kosli_report_synk_evidence
