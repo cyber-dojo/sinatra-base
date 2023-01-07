@@ -84,13 +84,13 @@ sha_in_image()
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
-on_ci_publish_tagged_images()
+on_ci_publish_tagged_image()
 {
   echo
   if ! on_ci; then
-    echo 'not on CI so not publishing tagged images'
+    echo 'not on CI so not publishing tagged image'
   else
-    echo 'on CI so publishing tagged images'
+    echo 'on CI so publishing tagged image'
     echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin
     docker push $(image_name):latest
     docker push $(image_name):$(image_tag)

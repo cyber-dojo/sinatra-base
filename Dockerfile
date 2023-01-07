@@ -1,12 +1,22 @@
 FROM cyberdojo/rack-base:afab321
+#FROM ruby:alpine
+
 LABEL maintainer=jon@jaggersoft.com
 
 WORKDIR /app
-COPY Gemfile .
 
-RUN apk add --no-cache \
+RUN apk --update --upgrade add tar
+
+RUN apk add --update \
+  build-base \
   libxml2-dev \
-  libxslt-dev
+  libxslt-dev \
+  postgresql-dev \
+  && rm -rf /var/cache/apk/*
+
+RUN bundle config build.nokogiri --use-system-libraries
+
+COPY Gemfile .
 
 RUN apk add --update --upgrade --virtual \
     build-dependencies \
@@ -21,6 +31,7 @@ rm -vrf /usr/lib/ruby/gems/*/cache/* \
         /var/tmp/*
 
 ARG GIT_COMMIT_SHA
+
 ENV SHA=${GIT_COMMIT_SHA}
 
 RUN apk add --update --upgrade nodejs
