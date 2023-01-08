@@ -1,6 +1,4 @@
-FROM cyberdojo/rack-base:afab321
-#FROM ruby:alpine
-
+FROM cyberdojo/rack-base:90d831c
 LABEL maintainer=jon@jaggersoft.com
 
 WORKDIR /app
@@ -12,9 +10,8 @@ RUN apk add --update \
   libxml2-dev \
   libxslt-dev \
   postgresql-dev \
-  && rm -rf /var/cache/apk/*
-
-RUN bundle config build.nokogiri --use-system-libraries
+  && rm -rf /var/cache/apk/* \
+  && bundle config build.nokogiri --use-system-libraries
 
 COPY Gemfile .
 
