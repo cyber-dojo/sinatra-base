@@ -1,4 +1,4 @@
-FROM cyberdojo/rack-base:be66953
+FROM cyberdojo/rack-base:c2db9c6
 LABEL maintainer=jon@jaggersoft.com
 
 WORKDIR /app
