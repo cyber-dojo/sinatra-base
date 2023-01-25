@@ -13,7 +13,7 @@ kosli_declare_pipeline()
   kosli pipeline declare \
     --description "Sinatra base image" \
     --visibility public \
-    --template artifact,synk-scan \
+    --template artifact,snyk-scan \
     --host "${hostname}"
 }
 
@@ -30,7 +30,7 @@ kosli_report_artifact_creation()
 }
 
 # - - - - - - - - - - - - - - - - - - -
-kosli_report_synk_evidence()
+kosli_report_snyk_evidence()
 {
   local -r hostname="${1}"
 
@@ -80,7 +80,7 @@ on_ci_kosli_report_artifact()
 }
 
 # - - - - - - - - - - - - - - - - - - -
-on_ci_kosli_report_synk_evidence()
+on_ci_kosli_report_snyk_evidence()
 {
   if on_ci
   then
@@ -89,7 +89,7 @@ on_ci_kosli_report_synk_evidence()
       --json-file-output=snyk.json \
       --policy-path=.snyk
 
-    kosli_report_synk_evidence "${KOSLI_HOST_STAGING}"
+    kosli_report_snyk_evidence "${KOSLI_HOST_STAGING}"
     kosli_report_snyk_evidence "${KOSLI_HOST_PRODUCTION}"
   fi
 }
