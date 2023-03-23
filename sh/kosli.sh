@@ -1,5 +1,5 @@
 
-# KOSLI_OWNER is set in CI
+# KOSLI_ORG is set in CI
 # KOSLI_API_TOKEN is set in CI
 # KOSLI_FLOW is set in CI
 # KOSLI_HOST_STAGING is set in CI
