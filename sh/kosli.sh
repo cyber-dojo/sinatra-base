@@ -1,9 +1,13 @@
+#!/usr/bin/env bash
+set -Eeu
+
+export KOSLI_FLOW=sinatra-base
 
 # KOSLI_ORG is set in CI
 # KOSLI_API_TOKEN is set in CI
-# KOSLI_FLOW is set in CI
 # KOSLI_HOST_STAGING is set in CI
 # KOSLI_HOST_PRODUCTION is set in CI
+# SNYK_TOKEN is set in CI
 
 # - - - - - - - - - - - - - - - - - - -
 kosli_create_flow()
@@ -78,10 +82,11 @@ on_ci_kosli_report_artifact()
 on_ci_kosli_report_snyk_evidence()
 {
   if on_ci; then
+    set +e
     snyk container test "$(artifact_name)" \
-      --file="${REPO_ROOT}/app/Dockerfile" \
       --json-file-output=snyk.json \
       --policy-path=.snyk
+    set -e
 
     kosli_report_snyk_evidence "${KOSLI_HOST_STAGING}"
     kosli_report_snyk_evidence "${KOSLI_HOST_PRODUCTION}"

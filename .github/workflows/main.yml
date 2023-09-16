@@ -7,17 +7,18 @@ on:
 
 jobs:
   pre-build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
   build-test-push:
     needs: [pre-build]
-    uses: cyber-dojo/reusable-actions-workflows/.github/workflows/kosli_build_test_push_dockerhub.yml@main
+    uses: cyber-dojo/reusable-actions-workflows/.github/workflows/kosli_build_test.yml@main
     secrets:
       DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
       KOSLI_API_TOKEN: ${{ secrets.KOSLI_API_TOKEN }}
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     with:
       BUILD_COMMAND: build_test_publish.sh
       KOSLI_FLOW: sinatra-base
