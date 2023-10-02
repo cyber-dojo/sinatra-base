@@ -29,7 +29,7 @@ remove_all_but_latest()
 build_image()
 {
   docker build \
-    --build-arg GIT_COMMIT_SHA=$(git_commit_sha) \
+    --build-arg COMMIT_SHA=$(git_commit_sha) \
     --tag $(image_name):$(image_tag) \
     "${REPO_ROOT}"
 }

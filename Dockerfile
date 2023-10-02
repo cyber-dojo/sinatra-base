@@ -1,4 +1,5 @@
-FROM cyberdojo/rack-base:be46d16
+ARG BASE_IMAGE=cyberdojo/rack-base:9b2b2d2
+FROM ${BASE_IMAGE}
 LABEL maintainer=jon@jaggersoft.com
 
 RUN apk add nodejs
@@ -19,7 +20,12 @@ RUN apk add --update --upgrade --virtual \
             /tmp/* \
             /var/tmp/*
 
-ARG GIT_COMMIT_SHA
+ARG COMMIT_SHA
+ENV SHA=${COMMIT_SHA}
+ENV COMMIT_SHA=${COMMIT_SHA}
 
-ENV SHA=${GIT_COMMIT_SHA}
+# ARGs are reset after FROM See https://github.com/moby/moby/issues/34129
+ARG BASE_IMAGE
+ENV BASE_IMAGE=${BASE_IMAGE}
+
 
