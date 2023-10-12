@@ -1,8 +1,11 @@
-ARG BASE_IMAGE=cyberdojo/rack-base:dbde4ab
+ARG BASE_IMAGE=cyberdojo/rack-base:9b2b2d2
 FROM ${BASE_IMAGE}
 LABEL maintainer=jon@jaggersoft.com
 
 RUN apk add nodejs
+RUN apk add libcurl=8.4.0-r0        # https://security.snyk.io/vuln/SNYK-ALPINE318-CURL-5958913#
+RUN apk add nghttp2-libs=1.57.0-r0  # https://security.snyk.io/vuln/SNYK-ALPINE318-NGHTTP2-5954768
+RUN apk upgrade
 
 WORKDIR /app
 
