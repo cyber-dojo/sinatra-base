@@ -7,7 +7,7 @@ export SH_DIR="${REPO_ROOT}/sh"
 source "${SH_DIR}/lib.sh"
 
 build_docker_image
-#on_ci_publish_tagged_image
+on_ci_publish_tagged_image
 #on_ci_kosli_create_flow
 #on_ci_kosli_report_artifact
 #on_ci_kosli_report_snyk_evidence
