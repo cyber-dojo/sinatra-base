@@ -14,9 +14,10 @@ RUN apk --update --upgrade --no-cache add \
     util-linux \
     tar
 
-RUN apk add openssl=3.1.4-r5   # https://security.snyk.io/vuln/SNYK-ALPINE319-OPENSSL-6191693
-RUN apk add libexpat=2.6.0-r0  # https://security.snyk.io/vuln/SNYK-ALPINE319-EXPAT-6241038
-RUN apk add nodejs
+RUN apk add openssl=3.1.4-r6   # https://security.snyk.io/vuln/SNYK-ALPINE319-OPENSSL-6593965
+RUN apk add libexpat=2.6.2-r0  # https://security.snyk.io/vuln/SNYK-ALPINE319-EXPAT-6446355
+RUN apk add nodejs=20.12.1-r0  # https://security.snyk.io/vuln/SNYK-ALPINE319-NODEJS-6531253
+RUN apk add c-ares=1.27.0-r0   # https://security.snyk.io/vuln/SNYK-ALPINE319-CARES-6483773
 RUN apk upgrade
 
 WORKDIR /app
