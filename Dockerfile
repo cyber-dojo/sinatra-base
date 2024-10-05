@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ruby:alpine3.19
+ARG BASE_IMAGE=ruby:3.3.5-alpine3.20
 FROM ${BASE_IMAGE}
 LABEL maintainer=jon@jaggersoft.com
 
@@ -14,12 +14,6 @@ RUN apk --update --upgrade --no-cache add \
     util-linux \
     tar
 
-RUN apk add openssl=3.1.7-r0   # https://security.snyk.io/vuln/SNYK-ALPINE319-OPENSSL-7413527
-RUN apk add libexpat=2.6.3-r0  # https://security.snyk.io/vuln/SNYK-ALPINE319-EXPAT-7908399
-RUN apk add nodejs=20.15.1-r0  # https://security.snyk.io/vuln/SNYK-ALPINE319-NODEJS-6531253
-RUN apk add c-ares=1.27.0-r0   # https://security.snyk.io/vuln/SNYK-ALPINE319-CARES-6483773
-RUN apk add busybox=1.36.1-r19 # https://security.snyk.io/vuln/SNYK-ALPINE319-BUSYBOX-6928846
-RUN apk add curl=8.9.0-r0      # https://security.snyk.io/vuln/SNYK-ALPINE319-CURL-7567377
 RUN apk upgrade
 
 WORKDIR /app
