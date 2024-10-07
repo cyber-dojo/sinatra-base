@@ -20,6 +20,7 @@ gem 'thin'
 # Sinatra
 gem 'capybara'
 gem 'extjs'
+gem 'mini_racer'
 gem 'nokogiri'
 gem 'sinatra'
 gem 'sinatra-contrib'
