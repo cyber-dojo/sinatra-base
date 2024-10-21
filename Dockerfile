@@ -14,6 +14,7 @@ RUN apk --update --upgrade --no-cache add \
     util-linux \
     tar
 
+RUN apk add libcrypto3=3.3.2-r1   # https://security.snyk.io/vuln/SNYK-ALPINE320-OPENSSL-8235201
 RUN apk upgrade
 
 WORKDIR /app
