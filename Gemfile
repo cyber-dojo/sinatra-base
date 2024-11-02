@@ -5,6 +5,7 @@ gem 'coveralls'
 gem 'json'
 gem 'minitest'
 gem 'minitest-ci'
+gem 'minitest-reporters'
 gem 'oj'
 gem 'ruby-prof'
 gem 'simplecov', "0.21.2"

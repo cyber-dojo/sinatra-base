@@ -43,7 +43,7 @@ tag_image_to_latest()
 # - - - - - - - - - - - - - - - - - - - - - -
 git_commit_sha()
 {
-  echo $(cd "${REPO_ROOT}" && git rev-parse HEAD)
+  cd "${REPO_ROOT}" && git rev-parse HEAD
 }
 
 # - - - - - - - - - - - - - - - - - - - - - -
@@ -89,6 +89,7 @@ on_ci_publish_tagged_image()
   echo
   if ! on_ci; then
     echo 'not on CI so not publishing tagged image'
+    echo "$(image_name):$(image_tag)"
   else
     echo 'on CI so publishing tagged image'
     echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin
