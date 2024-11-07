@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ruby:3.3.5-alpine3.20
+ARG BASE_IMAGE=ruby:3.3.6-alpine3.20
 FROM ${BASE_IMAGE}
 LABEL maintainer=jon@jaggersoft.com
 
