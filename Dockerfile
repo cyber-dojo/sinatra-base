@@ -1,5 +1,4 @@
-ARG BASE_IMAGE=ruby:3.3.6-alpine3.20
-FROM ${BASE_IMAGE}
+FROM ruby:3.3.6-alpine3.20
 LABEL maintainer=jon@jaggersoft.com
 
 # Update curl for https://scout.docker.com/vulnerabilities/id/CVE-2023-38039
@@ -15,6 +14,7 @@ RUN apk --update --upgrade --no-cache add \
     tar
 
 RUN apk add libcrypto3=3.3.2-r1   # https://security.snyk.io/vuln/SNYK-ALPINE320-OPENSSL-8235201
+RUN apk add libcurl=8.11.0-r1     # https://security.snyk.io/vuln/SNYK-ALPINE320-CURL-8348469
 RUN apk upgrade
 
 WORKDIR /app
@@ -33,8 +33,5 @@ RUN apk add --update --upgrade --virtual build-dependencies build-base \
 ARG COMMIT_SHA
 ENV SHA=${COMMIT_SHA}
 
-# ARGs are reset after FROM See https://github.com/moby/moby/issues/34129
-ARG BASE_IMAGE
-ENV BASE_IMAGE=${BASE_IMAGE}
 
 
