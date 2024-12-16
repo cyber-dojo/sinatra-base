@@ -14,7 +14,7 @@ RUN apk --update --upgrade --no-cache add \
     tar
 
 RUN apk add libcrypto3=3.3.2-r1   # https://security.snyk.io/vuln/SNYK-ALPINE320-OPENSSL-8235201
-RUN apk add libcurl=8.11.0-r1     # https://security.snyk.io/vuln/SNYK-ALPINE320-CURL-8348469
+RUN apk add libcurl=8.11.1-r0     # https://security.snyk.io/vuln/SNYK-ALPINE320-CURL-8499545
 RUN apk add libexpat=2.6.4-r0     # https://security.snyk.io/vuln/SNYK-ALPINE320-EXPAT-8359601
 RUN apk upgrade
 
