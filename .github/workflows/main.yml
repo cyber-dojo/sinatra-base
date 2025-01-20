@@ -37,7 +37,7 @@ jobs:
 
       - name: Build Docker image
         run:
-          make image_server
+          make image
 
       - name: Tar Docker image
         run:
