@@ -43,7 +43,7 @@ tag_image_to_latest()
 # - - - - - - - - - - - - - - - - - - - - - -
 git_commit_sha()
 {
-  cd "${REPO_ROOT}" && git rev-parse HEAD
+  git rev-parse HEAD
 }
 
 # - - - - - - - - - - - - - - - - - - - - - -
