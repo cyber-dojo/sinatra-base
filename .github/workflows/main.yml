@@ -105,7 +105,6 @@ jobs:
 
 
   notify-dependents:
-    runs-on: ubuntu-latest
     needs: [setup, push-image]
     uses: cyber-dojo/saver/.github/workflows/main.yml@v1
     with:
