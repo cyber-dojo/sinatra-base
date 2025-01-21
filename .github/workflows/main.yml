@@ -94,10 +94,11 @@ jobs:
         run:
           docker image load --input ${{ env.IMAGE_TAR_FILENAME }}
 
-      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
         with:
-          fetch-depth: 1
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Push image to Dockerhub
+      - name: Push docker image to DockerHub
         run:
-          make image_push
+          docker push ${{ env.IMAGE_NAME }}

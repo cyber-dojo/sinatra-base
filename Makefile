@@ -7,9 +7,6 @@ IMAGE_NAME := cyberdojo/sinatra-base:${SHORT_SHA}
 image:
 	${PWD}/sh/build_image.sh
 
-image_push:
-	${PWD}/sh/image_push.sh
-
 snyk-container-scan:
 	snyk container test ${IMAGE_NAME} \
         --file=Dockerfile \
