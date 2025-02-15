@@ -30,8 +30,6 @@ jobs:
     needs: [setup]
     env:
       IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
-    outputs:
-      digest: ${{ steps.variables.outputs.digest }}
     permissions:
       id-token: write
       contents: write
@@ -90,6 +88,8 @@ jobs:
     needs: [setup, snyk-container-scan]
     env:
       IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
+    outputs:
+      digest: ${{ steps.variables.outputs.digest }}
     steps:
       - name: Retrieve Docker image from cache
         uses: actions/cache@v4
