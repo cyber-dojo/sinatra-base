@@ -2,7 +2,7 @@
 SHORT_SHA := $(shell git rev-parse HEAD | head -c7)
 IMAGE_NAME := cyberdojo/sinatra-base:${SHORT_SHA}
 
-.PHONY: image snyk-container
+.PHONY: image snyk-container-scan
 
 image:
 	${PWD}/sh/build_image.sh

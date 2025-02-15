@@ -1,8 +1,6 @@
-FROM ruby:3.3.6-alpine3.20
+FROM ruby:3.3.7-alpine3.20@sha256:e1996c64c354f55460390a45df2033a5c246db9f1c7af31840909a0d2b7b2e7c
 LABEL maintainer=jon@jaggersoft.com
 
-# Update curl for https://scout.docker.com/vulnerabilities/id/CVE-2023-38039
-# Update procps for https://scout.docker.com/vulnerabilities/id/CVE-2023-4016
 # Install util-linux to use `script` to allow ECS exec logging
 # tar is needed to tar-pipe test coverage out of /tmp tmpfs
 RUN apk --update --upgrade --no-cache add \
@@ -13,9 +11,8 @@ RUN apk --update --upgrade --no-cache add \
     util-linux \
     tar
 
-RUN apk add libcrypto3=3.3.2-r1   # https://security.snyk.io/vuln/SNYK-ALPINE320-OPENSSL-8235201
-RUN apk add libcurl=8.11.1-r0     # https://security.snyk.io/vuln/SNYK-ALPINE320-CURL-8499545
-RUN apk add libexpat=2.6.4-r0     # https://security.snyk.io/vuln/SNYK-ALPINE320-EXPAT-8359601
+RUN apk add libcrypto3=3.3.3-r0 # https://security.snyk.io/vuln/SNYK-ALPINE320-OPENSSL-8710359
+
 RUN apk upgrade
 
 WORKDIR /app
