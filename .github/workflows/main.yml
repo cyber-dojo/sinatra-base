@@ -124,13 +124,14 @@ jobs:
 
   # A fresh sinatra-base is currently causing an error when applied as the base-image for the dashboard repo
   # Error compiling CSS asset: Could not open library /usr/local/bundle/gems/sassc-2.4.0/ext/libsass.so
+  # Works for saver repo.
 
   run-downstream-workflows:
     runs-on: ubuntu-latest
     needs: [setup, push-image]
     strategy:
       matrix:
-        repo: [ 'cyber-dojo/saver' ]
+        repo: [ 'cyber-dojo/differ' ]
     steps:
       - name: Run workflow
         uses: peter-evans/repository-dispatch@v3
