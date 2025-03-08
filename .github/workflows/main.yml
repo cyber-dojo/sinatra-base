@@ -44,7 +44,8 @@ jobs:
 
       - name: Tar Docker image
         run:
-          docker image save "${IMAGE_NAME}" --output "${IMAGE_TAR_FILENAME}"
+          docker image save "${IMAGE_NAME}"
+            --output "${IMAGE_TAR_FILENAME}"
 
       - name: Cache Docker image
         uses: actions/cache@v4
@@ -69,7 +70,8 @@ jobs:
 
       - name: Load Docker image
         run:
-          docker image load --input "${IMAGE_TAR_FILENAME}"
+          docker image load
+            --input "${IMAGE_TAR_FILENAME}"
 
       - name: Setup Snyk
         uses: snyk/actions/setup@master
@@ -124,14 +126,14 @@ jobs:
 
   # A fresh sinatra-base is currently causing an error when applied as the base-image for the dashboard repo
   # Error compiling CSS asset: Could not open library /usr/local/bundle/gems/sassc-2.4.0/ext/libsass.so
-  # Works for saver repo.
 
   run-downstream-workflows:
     runs-on: ubuntu-latest
     needs: [setup, push-image]
     strategy:
       matrix:
-        repo: [ 'cyber-dojo/differ' ]
+        #repo: [ 'cyber-dojo/differ', 'cyber-dojo/saver' ]
+        repo: [ 'cyber-dojo/saver' ]
     steps:
       - name: Run workflow
         uses: peter-evans/repository-dispatch@v3
