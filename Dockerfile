@@ -11,8 +11,6 @@ RUN apk --update --upgrade --no-cache add \
     util-linux \
     tar
 
-RUN apk add libcrypto3=3.3.3-r0 # https://security.snyk.io/vuln/SNYK-ALPINE320-OPENSSL-8710359
-
 RUN apk upgrade
 
 WORKDIR /app
@@ -20,6 +18,7 @@ COPY Gemfile .
 
 RUN apk add --update --upgrade --virtual build-dependencies build-base \
   && bundle config --global silence_root_warning 1 \
+  && bundle config set force_ruby_platform true \
   && bundle install \
   && gem clean \
   && apk del build-dependencies build-base \

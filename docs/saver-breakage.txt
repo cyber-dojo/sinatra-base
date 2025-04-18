@@ -1,0 +1,2 @@
+
+In the Gemfile, sinatra was pinned to 4.0.0 till I find out what breaks saver in 4.1.1
