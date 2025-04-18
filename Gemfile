@@ -18,16 +18,10 @@ gem 'rack-test'
 gem 'rest-client'
 gem 'thin'
 
-# Sinatra - pin to 4.0.0 till I find out what breaks saver in 4.1.1
 gem 'capybara'
-gem 'extjs'
-gem 'mini_racer'
 gem 'nokogiri'
-gem 'sinatra', "4.0.0"
-gem 'sinatra-contrib', "4.0.0"
-gem 'sass'
-gem 'sassc'
+gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'sprockets'
 gem 'selenium-webdriver'
-gem 'uglifier'
 gem 'uri'
