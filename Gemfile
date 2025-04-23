@@ -14,6 +14,7 @@ gem 'simplecov', "0.21.2"
 gem 'prometheus-client'
 gem 'puma'
 gem 'rack'
+gem 'rack-cors'
 gem 'rack-test'
 gem 'rest-client'
 gem 'thin'
