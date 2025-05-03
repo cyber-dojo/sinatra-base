@@ -130,8 +130,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # repo: [ differ, saver, dashboard ]
-        repo: [ dashboard ]
+        # repo: [ differ, saver, dashboard, start-points-base ]
+        repo: [ start-points-base ]
     steps:
       - uses: actions/checkout@v4
         with:
