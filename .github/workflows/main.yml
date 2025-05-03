@@ -130,8 +130,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # repo: [ 'cyber-dojo/differ', 'cyber-dojo/saver', 'cyber-dojo/dashboard' ]
-        repo: [ 'cyber-dojo/saver' ]
+        # repo: [ differ, saver, dashboard ]
+        repo: [ saver ]
     steps:
       - uses: actions/checkout@v4
         with:
