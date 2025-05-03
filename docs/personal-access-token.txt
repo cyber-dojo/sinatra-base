@@ -1,0 +1,26 @@
+
+Go to https://github.com/settings/profile
+On lhs, scroll down
+Select <> Developer Settings
+On lhs, select Personal Access Tokens
+Select Fine-grained-tokens
+Click [Generate new token] button
+Add Token name 'BASE_IMAGE_UPGRADE'
+Select Resource-owner as cyber-dojo
+For Repository-Access, click 'Only select repositories'
+In Drop-down, select repos you want to push to
+For Permissions, click Repository-permissions
+Scroll down to "Contents"
+In drop-down change 'No access' to 'Read and write'
+Scroll down to "Pull-requests"
+In drop-down change 'No access' to 'Read and write'
+Click [Generate token]
+Copy the token in buffer
+Add the token as Org-level secret called BASE_IMAGE_UPGRADE
+In main.yml, do this:
+      - uses: actions/checkout@v4
+        with:
+          repository: cyber-dojo/ci-testing
+          token: ${{ secrets.BASE_IMAGE_UPGRADE }}
+          fetch-depth: 0
+
