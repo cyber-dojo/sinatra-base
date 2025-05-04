@@ -8,7 +8,6 @@ on:
 env:
   IMAGE_TAR_FILENAME: /tmp/${{ github.event.repository.name }}:${{ github.sha }}.tar
   DOCKER_API_VERSION: ${{ vars.DOCKER_API_VERSION }}
-  BRANCH_NAME: update-base-image
 
 jobs:
   setup:
@@ -128,6 +127,8 @@ jobs:
   create-pr-on-downstream-repos:
     needs: [setup, push-image]
     runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: update-base-image
     strategy:
       matrix:
         # repo: [ differ, saver, dashboard, start-points-base ]
