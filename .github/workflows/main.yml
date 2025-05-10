@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE_TAR_FILENAME: /tmp/${{ github.event.repository.name }}:${{ github.sha }}.tar
+  IMAGE_TAR_FILENAME: /tmp/${{ github.event.repository.name }}.${{ github.sha }}.tar
   DOCKER_API_VERSION: ${{ vars.DOCKER_API_VERSION }}
 
 jobs:
@@ -61,7 +61,6 @@ jobs:
     needs: [setup, build-image]
     env:
       SARIF_FILENAME: snyk.container.scan.json
-      SNYK_TOKEN:     ${{ secrets.SNYK_TOKEN }}
       IMAGE_NAME:     ${{ needs.setup.outputs.image_name }}
     steps:
       - name: Retrieve Docker image from cache
@@ -83,6 +82,8 @@ jobs:
           fetch-depth: 1
 
       - name: Run Snyk container scan
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run:
           make snyk-container-scan
 
