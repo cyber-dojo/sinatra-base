@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 # Ruby
 gem 'coveralls'
 gem 'json'
+gem 'json-stream'
 gem 'minitest'
 gem 'minitest-ci'
 gem 'minitest-reporters'
