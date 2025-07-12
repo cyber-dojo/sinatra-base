@@ -1,4 +1,13 @@
 
+If you have permission to regenerate the PAT,
+Go to https://github.com/settings/personal-access-tokens/6494696
+Click [Regenerate token]
+Update the Org-level BASE_IMAGE_UPGRADE secret.
+  Go to https://github.com/organizations/cyber-dojo/settings/secrets/actions/BASE_IMAGE_UPGRADE
+  Click [enter a new value]
+
+
+If you do not have permission to regenerate the PAT,
 Go to https://github.com/settings/profile
 On lhs, scroll down
 Select <> Developer Settings
