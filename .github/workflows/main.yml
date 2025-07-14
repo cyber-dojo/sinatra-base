@@ -157,8 +157,8 @@ jobs:
 
       - name: Commit
         run: |
-          git config --global user.email "{{ github.actor }}"
-          git config --global user.name "${{ github.event.sender.login }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.event.sender.login }}@users.noreply.github.com"
           git add .
           git commit --message "Dockerfile - Automated base-image update"
           git push --set-upstream origin ${BRANCH_NAME}
