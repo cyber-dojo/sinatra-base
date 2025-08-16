@@ -1,6 +1,6 @@
 
 SHORT_SHA := $(shell git rev-parse HEAD | head -c7)
-IMAGE_NAME := cyberdojo/sinatra-base:${SHORT_SHA}
+IMAGE_NAME := ghcr.io/cyber-dojo/sinatra-base:${SHORT_SHA}
 
 .PHONY: image snyk-container-scan
 

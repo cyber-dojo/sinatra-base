@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: []
     outputs:
-      image_tag:   ${{ steps.vars.outputs.image_tag }}
       image_name:  ${{ steps.vars.outputs.image_name }}
       branch_name: ${{ steps.vars.outputs.branch_name }}
     steps:
@@ -22,9 +21,8 @@ jobs:
         id: vars
         run: |
           TAG="${GITHUB_SHA:0:7}"
-          echo "image_tag=${TAG}"                         >> ${GITHUB_OUTPUT}          
-          echo "image_name=cyberdojo/sinatra-base:${TAG}" >> ${GITHUB_OUTPUT}
-          echo "branch_name=update-base-image-${TAG}"     >> ${GITHUB_OUTPUT}
+          echo "image_name=ghcr.io/cyber-dojo/sinatra-base:${TAG}" >> ${GITHUB_OUTPUT}
+          echo "branch_name=update-base-image-${TAG}"              >> ${GITHUB_OUTPUT}
 
 
   build-image:
@@ -71,8 +69,7 @@ jobs:
 
       - name: Load Docker image
         run:
-          docker image load
-            --input "${IMAGE_TAR_FILENAME}"
+          docker image load --input "${IMAGE_TAR_FILENAME}"
 
       - name: Setup Snyk
         uses: snyk/actions/setup@master
@@ -106,12 +103,11 @@ jobs:
         run:
           docker image load --input "${IMAGE_TAR_FILENAME}"
 
-      - uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASS }}
+      - name: Docker login
+        run:
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      - name: Push docker image to DockerHub
+      - name: Push docker image to ghcr
         run:
           docker push "${IMAGE_NAME}"
 
@@ -148,7 +144,7 @@ jobs:
 
       - name: Edit 1st line of Dockerfile
         env:
-          BASE_IMAGE: cyberdojo/sinatra-base:${{ needs.setup.outputs.image_tag }}@sha256:${{ needs.push-image.outputs.digest }}
+          BASE_IMAGE: ${{ needs.setup.outputs.image_name }}@sha256:${{ needs.push-image.outputs.digest }}
         run: |
           cp Dockerfile Dockerfile.original
           echo "FROM ${BASE_IMAGE}" > Dockerfile
