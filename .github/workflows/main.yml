@@ -51,8 +51,8 @@ jobs:
           no-cache: true
           push: true
           tags: ${{ env.IMAGE_NAME }}
-          build-args:
-            - COMMIT_SHA: ${{ github.sha }}
+          build-args: |
+            COMMIT_SHA: ${{ github.sha }}
 
       - name: Sanitize digest
         id: sanitize-digest
