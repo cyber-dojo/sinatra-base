@@ -69,7 +69,8 @@ jobs:
           echo "digest=${DIGEST}" >> ${GITHUB_OUTPUT}
 
       - name: Tar Docker image
-        run:
+        run: |
+          docker pull "${IMAGE_NAME}"
           docker image save "${IMAGE_NAME}" --output "${IMAGE_TAR_FILENAME}"
 
       - name: Cache Docker image
