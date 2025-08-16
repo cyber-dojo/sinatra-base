@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup]
     outputs:
-      digest: ${{ steps.sanitize-digest.outputs.digest }}
+      digest: ${{ steps.get-digest.outputs.digest }}
     env:
       IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
     permissions:
@@ -42,31 +42,33 @@ jobs:
         with:
           fetch-depth: 1
 
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v3
+#
+#      - name: Build and push Docker image to ghcr.io
+#        id: docker_build
+#        uses: docker/build-push-action@v6
+#        with:
+#          context: .
+#          no-cache: true
+#          push: true
+#          tags: ${{ env.IMAGE_NAME }}
+#          build-args: |
+#            COMMIT_SHA: ${{ github.sha }}
+
+      - name: Build docker image
+        run:
+          make image
+
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push Docker image to ghcr.io
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          no-cache: true
-          push: true
-          tags: ${{ env.IMAGE_NAME }}
-          build-args: |
-            COMMIT_SHA: ${{ github.sha }}
-
-      - name: Sanitize digest
-        id: sanitize-digest
-        run: |
-          DIGEST=$(echo "${{ steps.docker_build.outputs.digest }}" | sed 's/^sha256://')
-          echo "digest=${DIGEST}" >> ${GITHUB_OUTPUT}
+      - name: Push docker image to ghcr
+        run:
+          docker push "${IMAGE_NAME}"
 
       - name: Tar Docker image
         run: |
@@ -78,6 +80,24 @@ jobs:
         with:
           path: ${{ env.IMAGE_TAR_FILENAME }}
           key:  ${{ env.IMAGE_NAME }}
+
+#      - name: Sanitize digest
+#        id: sanitize-digest
+#        run: |
+#          DIGEST=$(echo "${{ steps.docker_build.outputs.digest }}" | sed 's/^sha256://')
+#          echo "digest=${DIGEST}" >> ${GITHUB_OUTPUT}
+
+      - name: Setup Kosli CLI
+        uses: kosli-dev/setup-cli-action@v2
+        with:
+          version: ${{ vars.KOSLI_CLI_VERSION }}
+
+      - name: Make digest available to subsequent jobs
+        id: get-digest
+        run: |
+          docker pull "${IMAGE_NAME}"          
+          DIGEST=$(kosli fingerprint "${IMAGE_NAME}" --artifact-type=docker)
+          echo "digest=${DIGEST}" >> ${GITHUB_OUTPUT}
 
 
   snyk-container-scan:
@@ -111,49 +131,49 @@ jobs:
           make snyk-container-scan
 
 
-  create-pr-on-downstream-repos:
-    needs: [setup, build-image, snyk-container-scan]
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
-      BRANCH_NAME: ${{ needs.setup.outputs.branch_name }}
-    strategy:
-      matrix:
-        repo: [ differ, saver, dashboard, start-points-base ]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: cyber-dojo/${{ matrix.repo }}
-          token: ${{ secrets.BASE_IMAGE_UPGRADE }}
-          fetch-depth: 0
-
-      - name: Create branch
-        run:
-          git checkout -b ${BRANCH_NAME}
-
-      - name: Edit 1st line of Dockerfile
-        env:
-          BASE_IMAGE: ${{ env.IMAGE_NAME }}@sha256:${{ needs.build-image.outputs.digest }}
-        run: |
-          cp Dockerfile Dockerfile.original
-          echo "FROM ${BASE_IMAGE}" > Dockerfile
-          cat Dockerfile.original | tail -n+2 >> Dockerfile
-          rm Dockerfile.original
-
-      - name: Commit
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.event.sender.login }}@users.noreply.github.com"
-          git add .
-          git commit --message "Dockerfile - Automated base-image update"
-          git push --set-upstream origin ${BRANCH_NAME}
-
-      - name: Create pull request
-        env:
-          GH_TOKEN: ${{ secrets.BASE_IMAGE_UPGRADE }}
-        run:
-          gh pr create
-            --base main
-            --head ${BRANCH_NAME}
-            --title 'Merge update-base-image into main'
-            --body 'Created by Github action'
+#  create-pr-on-downstream-repos:
+#    needs: [setup, build-image, snyk-container-scan]
+#    runs-on: ubuntu-latest
+#    env:
+#      IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
+#      BRANCH_NAME: ${{ needs.setup.outputs.branch_name }}
+#    strategy:
+#      matrix:
+#        repo: [ differ, saver, dashboard, start-points-base ]
+#    steps:
+#      - uses: actions/checkout@v4
+#        with:
+#          repository: cyber-dojo/${{ matrix.repo }}
+#          token: ${{ secrets.BASE_IMAGE_UPGRADE }}
+#          fetch-depth: 0
+#
+#      - name: Create branch
+#        run:
+#          git checkout -b ${BRANCH_NAME}
+#
+#      - name: Edit 1st line of Dockerfile
+#        env:
+#          BASE_IMAGE: ${{ env.IMAGE_NAME }}@sha256:${{ needs.build-image.outputs.digest }}
+#        run: |
+#          cp Dockerfile Dockerfile.original
+#          echo "FROM ${BASE_IMAGE}" > Dockerfile
+#          cat Dockerfile.original | tail -n+2 >> Dockerfile
+#          rm Dockerfile.original
+#
+#      - name: Commit
+#        run: |
+#          git config --global user.name "${{ github.actor }}"
+#          git config --global user.email "${{ github.event.sender.login }}@users.noreply.github.com"
+#          git add .
+#          git commit --message "Dockerfile - Automated base-image update"
+#          git push --set-upstream origin ${BRANCH_NAME}
+#
+#      - name: Create pull request
+#        env:
+#          GH_TOKEN: ${{ secrets.BASE_IMAGE_UPGRADE }}
+#        run:
+#          gh pr create
+#            --base main
+#            --head ${BRANCH_NAME}
+#            --title 'Merge update-base-image into main'
+#            --body 'Created by Github action'
