@@ -28,6 +28,8 @@ jobs:
   build-image:
     runs-on: ubuntu-latest
     needs: [setup]
+    outputs:
+      digest: ${{ steps.sanitize-digest.outputs.digest }}
     env:
       IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
     permissions:
@@ -38,14 +40,29 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Build Docker image
-        run:
-          make image
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image to ghcr.io
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          no-cache: true
+          push: true
+          tags: ${{ env.IMAGE_NAME }}
+          build-args:
+            - COMMIT_SHA: ${{ github.sha }}
+
+      - name: Sanitize digest
+        id: sanitize-digest
+        run: |
+          DIGEST=$(echo "${{ steps.docker_build.outputs.digest }}" | sed 's/^sha256://')
+          echo "digest=${DIGEST}" >> ${GITHUB_OUTPUT}
 
       - name: Tar Docker image
         run:
-          docker image save "${IMAGE_NAME}"
-            --output "${IMAGE_TAR_FILENAME}"
+          docker image save "${IMAGE_NAME}" --output "${IMAGE_TAR_FILENAME}"
 
       - name: Cache Docker image
         uses: actions/cache@v4
@@ -85,48 +102,11 @@ jobs:
           make snyk-container-scan
 
 
-  push-image:
+  create-pr-on-downstream-repos:
+    needs: [setup, build-image, snyk-container-scan]
     runs-on: ubuntu-latest
-    needs: [setup, snyk-container-scan]
     env:
       IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
-    outputs:
-      digest: ${{ steps.variables.outputs.digest }}
-    steps:
-      - name: Retrieve Docker image from cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.IMAGE_TAR_FILENAME }}
-          key:  ${{ env.IMAGE_NAME }}
-
-      - name: Load Docker image
-        run:
-          docker image load --input "${IMAGE_TAR_FILENAME}"
-
-      - name: Docker login
-        run:
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-
-      - name: Push docker image to ghcr
-        run:
-          docker push "${IMAGE_NAME}"
-
-      - name: Setup Kosli CLI
-        uses: kosli-dev/setup-cli-action@v2
-        with:
-          version: ${{ vars.KOSLI_CLI_VERSION }}
-
-      - name: Make artifact digest available to following jobs
-        id: variables
-        run: |
-          DIGEST=$(kosli fingerprint "${IMAGE_NAME}" --artifact-type=oci)        
-          echo "digest=${DIGEST}" >> ${GITHUB_OUTPUT}      
-
-
-  create-pr-on-downstream-repos:
-    needs: [setup, push-image]
-    runs-on: ubuntu-latest
-    env:
       BRANCH_NAME: ${{ needs.setup.outputs.branch_name }}
     strategy:
       matrix:
@@ -144,7 +124,7 @@ jobs:
 
       - name: Edit 1st line of Dockerfile
         env:
-          BASE_IMAGE: ${{ needs.setup.outputs.image_name }}@sha256:${{ needs.push-image.outputs.digest }}
+          BASE_IMAGE: ${{ env.IMAGE_NAME }}@sha256:${{ needs.build-image.outputs.digest }}
         run: |
           cp Dockerfile Dockerfile.original
           echo "FROM ${BASE_IMAGE}" > Dockerfile
