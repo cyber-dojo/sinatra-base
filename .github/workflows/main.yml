@@ -119,8 +119,7 @@ jobs:
       BRANCH_NAME: ${{ needs.setup.outputs.branch_name }}
     strategy:
       matrix:
-        repo: [ dashboard ]
-        # repo: [ differ, saver, dashboard, start-points-base ]
+        repo: [ differ, saver, dashboard, start-points-base ]
     steps:
       - uses: actions/checkout@v4
         with:
