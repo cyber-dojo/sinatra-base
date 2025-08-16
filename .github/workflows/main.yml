@@ -6,6 +6,7 @@ on:
       - main
 
 env:
+  REGISTRY: ghcr.io
   IMAGE_TAR_FILENAME: /tmp/${{ github.event.repository.name }}.${{ github.sha }}.tar
   DOCKER_API_VERSION: ${{ vars.DOCKER_API_VERSION }}
 
@@ -21,8 +22,8 @@ jobs:
         id: vars
         run: |
           TAG="${GITHUB_SHA:0:7}"
-          echo "image_name=ghcr.io/cyber-dojo/sinatra-base:${TAG}" >> ${GITHUB_OUTPUT}
-          echo "branch_name=update-base-image-${TAG}"              >> ${GITHUB_OUTPUT}
+          echo "image_name=${REGISTRY}/cyber-dojo/sinatra-base:${TAG}" >> ${GITHUB_OUTPUT}
+          echo "branch_name=update-base-image-${TAG}"                  >> ${GITHUB_OUTPUT}
 
 
   build-image:
@@ -34,7 +35,8 @@ jobs:
       IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
     permissions:
       id-token: write
-      contents: write
+      packages: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
