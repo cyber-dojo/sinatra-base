@@ -59,7 +59,6 @@ jobs:
           no-cache: true
           push: true
           tags: ${{ env.IMAGE_NAME }}
-          platforms: linux/amd64,linux/arm64
           build-args: |
             COMMIT_SHA: ${{ github.sha }}
 
@@ -120,7 +119,8 @@ jobs:
       BRANCH_NAME: ${{ needs.setup.outputs.branch_name }}
     strategy:
       matrix:
-        repo: [ differ, saver, dashboard, start-points-base ]
+        repo: [ dashboard ]
+        # repo: [ differ, saver, dashboard, start-points-base ]
     steps:
       - uses: actions/checkout@v4
         with:
