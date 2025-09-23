@@ -11,7 +11,8 @@ RUN apk --update --upgrade --no-cache add \
     util-linux \
     tar
 
-RUN apk add --upgrade git=2.45.4-r0 # https://security.snyk.io/vuln/SNYK-ALPINE320-GIT-10669667
+RUN apk add --upgrade git=2.45.4-r0      # https://security.snyk.io/vuln/SNYK-ALPINE320-GIT-10669667
+RUN apk add --upgrade libexpat=2.7.2-r0  # https://security.snyk.io/vuln/SNYK-ALPINE320-EXPAT-13003709
 RUN apk upgrade
 
 WORKDIR /app
