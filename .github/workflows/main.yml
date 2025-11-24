@@ -107,8 +107,9 @@ jobs:
       - name: Run Snyk container scan
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run:
+        run: |
           make snyk-container-scan
+          exit 42
 
 
   create-pr-on-downstream-repos:
