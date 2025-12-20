@@ -12,6 +12,8 @@ RUN apk --update --upgrade --no-cache add \
     tar
 
 RUN apk upgrade
+RUN apk add --upgrade c-ares=1.34.6-r0  # https://security.snyk.io/vuln/SNYK-ALPINE322-CARES-14409293
+
 
 WORKDIR /app
 COPY Gemfile .
