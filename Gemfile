@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'coveralls'
 gem 'json'
 gem 'json-stream'
-gem 'minitest'
+gem 'minitest', "5.26.2"
 gem 'minitest-ci'
 gem 'minitest-reporters'
 gem 'oj'
@@ -26,3 +26,18 @@ gem 'sinatra-contrib'
 gem 'sprockets'
 gem 'selenium-webdriver'
 gem 'uri'
+
+# minitest is locked to 5.26.2 because with 6.0.0 
+# the augmented reporting fails. Specifically, in, eg
+# differ/test/server/lib/id58_test_base.rb 
+# there is this...
+#
+# reporters = [
+#   Minitest::Reporters::DefaultReporter.new,
+#   Minitest::Reporters::SlimJsonReporter.new,
+#   Minitest::Reporters::JUnitReporter.new("#{ENV.fetch('COVERAGE_ROOT')}/junit")
+# ]
+# Minitest::Reporters.use!(reporters)
+#
+# which works for 5.26.0 (SlimJsonReporter produces test_metrics.json)
+# but fails for 6.0.0 (SlimJsonReporter does NOT produce test_metrics.json)
