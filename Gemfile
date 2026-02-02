@@ -41,3 +41,4 @@ gem 'uri'
 #
 # which works for 5.26.0 (SlimJsonReporter produces test_metrics.json)
 # but fails for 6.0.0 (SlimJsonReporter does NOT produce test_metrics.json)
+# See https://github.com/minitest-reporters/minitest-reporters/issues/367

@@ -5,7 +5,7 @@ IMAGE_NAME := ghcr.io/cyber-dojo/sinatra-base:${SHORT_SHA}
 .PHONY: image snyk-container-scan
 
 image:
-	${PWD}/sh/build_image.sh
+	${PWD}/bin/build_image.sh
 
 snyk-container-scan:
 	snyk container test ${IMAGE_NAME} \
