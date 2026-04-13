@@ -152,6 +152,7 @@ jobs:
           - saver
           - dashboard
           - start-points-base
+          - web
     steps:
       - uses: actions/checkout@v6
         with:
