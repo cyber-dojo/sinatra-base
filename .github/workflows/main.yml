@@ -76,7 +76,7 @@ jobs:
         id: get-digest
         run: |
           docker pull "${IMAGE_NAME}"          
-          DIGEST=$(kosli fingerprint "${IMAGE_NAME}" --artifact-type=docker)
+          DIGEST=$(kosli fingerprint "${IMAGE_NAME}" --artifact-type=docker --debug=false)
           echo "digest=${DIGEST}" >> ${GITHUB_OUTPUT}
 
 
