@@ -12,9 +12,15 @@ RUN apk --update --upgrade --no-cache add \
     tar
 
 RUN apk upgrade
-RUN apk add --upgrade expat=2.7.5-r0    # https://security.snyk.io/vuln/SNYK-ALPINE322-EXPAT-15704589
-RUN apk add --upgrade c-ares=1.34.6-r0  # https://security.snyk.io/vuln/SNYK-ALPINE322-CARES-14409293
-RUN apk add --upgrade openssl=3.5.6-r0  # https://security.snyk.io/vuln/SNYK-ALPINE322-OPENSSL-15993406
+
+# https://security.snyk.io/vuln/SNYK-ALPINE322-EXPAT-15704589
+RUN apk add --upgrade expat=2.7.5-r0
+# https://security.snyk.io/vuln/SNYK-ALPINE322-CARES-14409293
+RUN apk add --upgrade c-ares=1.34.6-r0
+# https://security.snyk.io/vuln/SNYK-ALPINE322-OPENSSL-15993406
+RUN apk add --upgrade openssl=3.5.6-r0
+# https://security.snyk.io/vuln/SNYK-ALPINE322-ZLIB-16078399
+RUN apk add --upgrade zlib=1.3.2-r0
 
 WORKDIR /app
 COPY Gemfile .
