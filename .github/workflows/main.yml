@@ -62,7 +62,7 @@ jobs:
           docker image save "${IMAGE_NAME}" --output "${IMAGE_TAR_FILENAME}"
 
       - name: Cache Docker image
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.IMAGE_TAR_FILENAME }}
           key:  ${{ env.IMAGE_NAME }}
@@ -88,7 +88,7 @@ jobs:
       IMAGE_NAME:     ${{ needs.setup.outputs.image_name }}
     steps:
       - name: Retrieve Docker image from cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.IMAGE_TAR_FILENAME }}
           key:  ${{ env.IMAGE_NAME }}
@@ -118,7 +118,7 @@ jobs:
       IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
     steps:
       - name: Retrieve Docker image from cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.IMAGE_TAR_FILENAME }}
           key:  ${{ env.IMAGE_NAME }}
