@@ -1,4 +1,4 @@
-FROM ruby:3.3.10-alpine3.22@sha256:33c684437f1d651cc9200b9e9554a815f020f5bb63593fadbd49d50acd29f0e3
+FROM ruby:4.0.4-alpine3.23@sha256:ac9c68cd41d6a49a9138fca74aa344968e8ddb5e20d8a3b1f455b97c7148f8da
 LABEL maintainer=jon@jaggersoft.com
 
 # Install util-linux to use `script` to allow ECS exec logging
@@ -12,15 +12,6 @@ RUN apk --update --upgrade --no-cache add \
     tar
 
 RUN apk upgrade
-
-# https://security.snyk.io/vuln/SNYK-ALPINE322-EXPAT-15704589
-RUN apk add --upgrade expat=2.7.5-r0
-# https://security.snyk.io/vuln/SNYK-ALPINE322-CARES-14409293
-RUN apk add --upgrade c-ares=1.34.6-r0
-# https://security.snyk.io/vuln/SNYK-ALPINE322-OPENSSL-15993406
-RUN apk add --upgrade openssl=3.5.6-r0
-# https://security.snyk.io/vuln/SNYK-ALPINE322-ZLIB-16078399
-RUN apk add --upgrade zlib=1.3.2-r0
 
 WORKDIR /app
 COPY Gemfile .
