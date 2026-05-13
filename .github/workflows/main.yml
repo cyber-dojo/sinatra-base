@@ -8,7 +8,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_TAR_FILENAME: /tmp/${{ github.event.repository.name }}.${{ github.sha }}.tar
-  DOCKER_API_VERSION: ${{ vars.DOCKER_API_VERSION }}
 
 jobs:
   setup:
