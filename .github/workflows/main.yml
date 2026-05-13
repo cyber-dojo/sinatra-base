@@ -168,7 +168,7 @@ jobs:
           BASE_IMAGE: ${{ env.IMAGE_NAME }}@sha256:${{ needs.build-image.outputs.digest }}
         run: |
           cp Dockerfile Dockerfile.original
-          echo "FROM ${BASE_IMAGE}" > Dockerfile
+          echo "FROM ${BASE_IMAGE} AS base" > Dockerfile
           cat Dockerfile.original | tail -n+2 >> Dockerfile
           rm Dockerfile.original
 
