@@ -37,9 +37,8 @@ jobs:
       packages: write
       contents: read
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
+      - uses: cyber-dojo/pinned-checkout@main
+      - uses: cyber-dojo/setup-kosli-cli@main
 
       - name: Build docker image
         run:
@@ -65,11 +64,6 @@ jobs:
         with:
           path: ${{ env.IMAGE_TAR_FILENAME }}
           key:  ${{ env.IMAGE_NAME }}
-
-      - name: Setup Kosli CLI
-        uses: kosli-dev/setup-cli-action@v3
-        with:
-          version: ${{ vars.KOSLI_CLI_VERSION }}
 
       - name: Make digest available to subsequent jobs
         id: get-digest
