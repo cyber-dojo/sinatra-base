@@ -152,6 +152,7 @@ jobs:
           - dashboard
           - start-points-base
           - web
+          - creator
     steps:
       - uses: actions/checkout@v6
         with:
