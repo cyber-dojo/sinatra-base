@@ -1,5 +1,4 @@
-
-FROM ruby:4.0.4-alpine3.23@sha256:f6f95024b33821a2603ba42fa24618c8184f585d83e8a023d81452dbabc13507
+FROM ruby:4.0.5-alpine3.24@sha256:130af23e14f6884c833b2a37d2431e460f94a00af76f2afafd610800054f14a4
 # FROM ruby:3.3.10-alpine3.22@sha256:33c684437f1d651cc9200b9e9554a815f020f5bb63593fadbd49d50acd29f0e3
 # 3.3 upgrade to 4.0.4 caused languages-start-points service and exercises-start-points
 # to be OOM-killed in aws-prod. Alleviated by increasing their mem_limit to 128mb and 
@@ -7,7 +6,7 @@ FROM ruby:4.0.4-alpine3.23@sha256:f6f95024b33821a2603ba42fa24618c8184f585d83e8a0
 # 3.4.x introduced a GC regression (bugs.ruby-lang.org/issues/21214) in which VmRSS grows ~37%
 # higher than 3.3.x for the same workload because transient-object heaps expand in lockstep
 # with long-lived-object heaps. The fix was not backported to 3.4.x and landed in 4.0.0
-# but as I say above, with 4.0.4 we we're still hitting the OOM killer.
+# but as I say above, with 4.0.4 we were still hitting the OOM killer.
 LABEL maintainer=jon@jaggersoft.com
 
 # Install util-linux to use `script` to allow ECS exec logging
