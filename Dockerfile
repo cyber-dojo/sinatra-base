@@ -1,4 +1,4 @@
-FROM ruby:4.0.5-alpine3.24@sha256:130af23e14f6884c833b2a37d2431e460f94a00af76f2afafd610800054f14a4
+FROM ruby:4.0.5-alpine3.24@sha256:f48938e9ae72a4d32e728b03c306e7a7ff21f0cb6c2ed33f44a078c700b2aea6
 # FROM ruby:3.3.10-alpine3.22@sha256:33c684437f1d651cc9200b9e9554a815f020f5bb63593fadbd49d50acd29f0e3
 # 3.3 upgrade to 4.0.4 caused languages-start-points service and exercises-start-points
 # to be OOM-killed in aws-prod. Alleviated by increasing their mem_limit to 128mb and 
