@@ -15,7 +15,6 @@ RUN apk --update --upgrade --no-cache add \
     bash \
     tini \
     procps \
-    curl \
     util-linux \
     tar
 
