@@ -147,6 +147,8 @@ jobs:
           - start-points-base
           - web
           - creator
+          - runner
+          - spooler
     steps:
       - uses: actions/checkout@v6
         with:
