@@ -34,46 +34,32 @@ image_sha()
 }
 
 
-#build_docker_image()
-#{
-#  local -r dil=$(docker image ls --format "{{.Repository}}:{{.Tag}}")
-#  remove_all_but_latest "${dil}" "$(image_name)"
-#  build_image
-#  tag_image_to_latest # for cache till next build_tagged_images()
-#  check_embedded_env_var
-#}
-#
-#remove_all_but_latest()
-#{
-#  local -r docker_image_ls="${1}"
-#  local -r name="${2}"
-#  for image_name in `echo "${docker_image_ls}" | grep "${name}:"`
-#  do
-#    if [ "${image_name}" != "${name}:latest" ]; then
-#      if [ "${image_name}" != "${name}:<none>" ]; then
-#        docker image rm "${image_name}"
-#      fi
-#    fi
-#  done
-#  docker system prune --force
-#}
-#
-#tag_image_to_latest()
-#{
-#  docker tag $(image_name):$(image_tag) $(image_name):latest
-#}
-#
-#check_embedded_env_var()
-#{
-#  if [ "$(git_commit_sha)" != "$(sha_in_image)" ]; then
-#    echo "ERROR: unexpected env-var inside image $(image_name):$(image_tag)"
-#    echo "expected: 'SHA=$(git_commit_sha)'"
-#    echo "  actual: 'SHA=$(sha_in_image)'"
-#    exit 42
-#  fi
-#}
-#
-#sha_in_image()
-#{
-#  docker run --rm $(image_name):$(image_tag) sh -c 'echo -n ${SHA}'
-#}
+# - - - - - - - - - - - - - - - - - - - - - -
+tag_image_to_latest()
+{
+  docker tag "$(image_name):$(image_tag)" "$(image_name):latest"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# Keeps :latest, which holds the image-layer build cache, and this commit's
+# tag, which names the build just made. Every older tag goes, and an earlier
+# build whose last tag was one of those goes with it, so local builds stop
+# accumulating images.
+remove_old_images()
+{
+  local -r name="$(image_name)"
+  local -r tag="$(image_tag)"
+  echo Removing old images
+  # grep exits non-zero when the machine holds no sinatra-base image, eg one
+  # whose images have just been cleared, so an empty list must not end the build.
+  local tagged_name
+  for tagged_name in $(docker image ls --format '{{.Repository}}:{{.Tag}}' | grep "^${name}:" || true)
+  do
+    if [ "${tagged_name}" != "${name}:latest" ] \
+    && [ "${tagged_name}" != "${name}:${tag}" ]; then
+      # Removing by name:tag untags, so this succeeds even while a container
+      # references the image, leaving it dangling until that container goes.
+      docker image rm --force "${tagged_name}" || echo "  skipped ${tagged_name} (in use)"
+    fi
+  done
+}

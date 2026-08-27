@@ -7,7 +7,7 @@ gem 'minitest'
 gem 'minitest-ci'
 gem 'minitest-reporters'
 gem 'oj'
-gem 'simplecov', "0.21.2"
+gem 'simplecov'
 
 # Rack
 gem 'prometheus-client'
@@ -18,7 +18,7 @@ gem 'thin'
 
 # capybara 3.40.0 (latest) triggers Ruby 3.4+ deprecation warnings:
 #   URI::RFC3986_PARSER.make_regexp is obsolete. Use URI::RFC2396_PARSER.make_regexp explicitly.
-# A fix exists in PR https://github.com/teamcapybara/capybara/pull/2781 but has not been released.
+# The fix in PR https://github.com/teamcapybara/capybara/pull/2781 was merged 2026-04-19 but has not been released (latest is 3.40.0).
 # When a new version is released with that fix, remove this comment and let bundler resolve the latest.
 gem 'capybara'
 gem 'nokogiri'
