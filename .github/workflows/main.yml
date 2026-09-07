@@ -129,14 +129,14 @@ jobs:
     strategy:
       matrix:
         repo:
-          #- differ
-          #- saver
-          #- dashboard
-          #- start-points-base
-          #- web
-          #- creator
+          - creator
+          - dashboard
+          - differ
           - runner
-          #- spooler
+          - saver
+          - spooler
+          - start-points-base
+          - web
     steps:
       - uses: actions/checkout@v6
         with:
