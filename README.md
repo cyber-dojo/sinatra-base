@@ -10,4 +10,4 @@ that use sinatra-base as the base-image in their Dockerfile's FROM statement:
   - [dashboard](https://github.com/cyber-dojo/dashboard/blob/main/Dockerfile)
   - [start-points-base](https://github.com/cyber-dojo/start-points-base/blob/main/Dockerfile)
 
-![cyber-dojo.org home page](https://github.com/cyber-dojo/cyber-dojo/blob/master/shared/home_page_snapshot.png)
+![cyber-dojo.org home page](https://github.com/cyber-dojo/cyber-dojo/blob/main/shared/home_page_snapshot.png)
